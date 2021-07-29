@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About me in 3d</title>
+    <script src="js/three.min.js"></script>
+    <script src="js/Detector.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/THREEx.KeyboardState.js"></script>
+    <script src="js/THREEx.FullScreen.js"></script>
+    <script src="js/THREEx.WindowResize.js"></script>
+    <script src="js/my.mcontrol.js"></script>
+    <script src="http://localhost:1111/lidsacaebasic.js" alt=" https://github.com/aydavid/res/lidsacaebasic.js"></script>
+    <script src="http://localhost:1111/aygraph2.js" alt=" https://github.com/aydavid/res/lidsacaebasic.js"></script>
+    <script src="http://localhost:1111/THREEJS/THREE.GLTFLoader.js"></script>
+    
+    <style>
+        body {
+            background-color: #ff0086;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            top: 50px;
+        }
+        #canv2d{
+            background-color: blue;
+            position: absolute;
+            margin: 1px solid;
+            top: 800px;
+            display: none;
+        }
+        .score-container {
+            background-color: rgba(200, 20, 20, 0.5);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: transform 0.5s 4s;
+        }
+
+        .score-container #score {
+            color: white;
+            font-size: 8vh;
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+            padding-left: 120px;
+        }
+    </style>
+</head>
+<body>
+<script src="js/2dcanvas.js"></script>
+<div class="score-container">
+    <a id="downLink"><div id="score"></div></a>
+</div>
+<canvas id="canv2d" width="100" height="200"></canvas>
+<!--<div id="message" style="color:green; background-color: #a06cc2"></div>-->
+
+<div id="ThreeJS"></div>
+<audio src="sound/explode.mp3" preload="auto" id="explode_sound"></audio>
+
+<script src="js/index.js"></script>
+</body>
+</html>

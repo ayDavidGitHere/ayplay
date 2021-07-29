@@ -1,0 +1,101 @@
+
+#headerDiv{
+    width: 100%;
+    height: 40px;
+    background: #000837;
+}
+
+.para{
+    display: block;
+    width: 92%;
+    margin: 0 auto;
+    background: transparent;
+    padding: 20px;
+    box-sizing: border-box; 
+}
+.boxPara{
+    -webkit-box-shadow: 1px 1px 5px -1px grey; 
+    -moz-box-shadow: 1px 1px 5px -1px grey; 
+    box-shadow: 1px 1px 5px -1px grey; 
+    outline: none;
+    border-radius: 10px;
+    border-bottom-right-radius: 30px;
+    position: relative;
+    margin-bottom:1.25rem;
+}
+
+
+paraT{
+    display: inline-block;
+    color: midnightblue;
+    width: 80%;
+    font-size: 26px;
+    font-family: font12; font-weight: bold;
+    text-transform: capitalize;
+}
+  
+subT{
+    display: inline-block;
+    color: indigo;
+    width: 90%;
+    font-size: 17px;
+    font-family: font12;  
+    text-transform: capitalize;
+}
+h2{
+    display: inherit;
+    font-size: inherit;  
+}
+
+
+
+
+
+
+
+
+
+ .constBut{
+    width: 80%; 
+    display: block;
+    margin: 0 auto;
+background: radial-gradient(circle farthest-corner at bottom right, purple, #000837 85%);
+    border-radius: 30px;
+    box-sizing: border-box;
+    color: white;
+    font-size: 17px; text-align: center;
+    font-family: font;
+    outline: none;
+    padding-top: 12px; padding-bottom: 12px;  
+}
+
+nav .constBut{
+    display: inline;
+    margin-left: 10%; max-width: 90%;
+    padding-left: 12%; padding-right: 12%;
+}
+
+
+
+
+
+
+
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+@media only screen and (min-width: 450px) and (max-width: 1023px) {
+     .para{
+        width: 50%; float: left;
+      }
+}  
+
+     

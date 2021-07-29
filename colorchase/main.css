@@ -1,0 +1,4 @@
+@import "http://localhost:1111/fontconstant.css";
+#logText{
+    font-family: codar, Monospace, Monaco;
+}

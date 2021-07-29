@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Move a cube</title>
+    <script src="../js/three.min.js"></script>
+    <script src="../js/Detector.js"></script>
+    <script src="../js/OrbitControls.js"></script>
+    <script src="../js/THREEx.KeyboardState.js"></script>
+    <script src="../js/THREEx.FullScreen.js"></script>
+    <script src="../js/THREEx.WindowResize.js"></script>
+    <script src="../js/my.mcontrol.js"></script>
+    <script src="http://localhost:1111/lidsacaebasic.js" alt=" https://github.com/aydavid/res/lidsacaebasic.js"></script>
+    <style>
+        body {
+            background-color: #111111;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="ThreeJS" style="z-index: 2;"></div>
+    <script onerror="alert()">
+        // 定义全局变量
+        var container, scene, camera, renderer, controls;
+        var keyboard = new THREEx.KeyboardState();
+        var clock = new THREE.Clock;
+        var mControl;
+        var movingCube;   
+        
+        init();
+        animate();
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            // Camera
+            var screenWidth = window.innerWidth;
+            var screenHeight = window.innerHeight;
+            camera = new THREE.PerspectiveCamera(90, screenWidth/screenHeight, 0.1, 20000);
+            camera.position.set(0, 450, 400);
+
+            // Renderer
+            if(Detector.webgl) {
+                renderer = new THREE.WebGLRenderer({antialias:true});
+            } else {
+                renderer = new THREE.CanvasRenderer();
+            }
+            renderer.setSize(screenWidth, screenHeight);
+            container = document.getElementById("ThreeJS");
+            container.appendChild(renderer.domElement);
+
+            THREEx.WindowResize(renderer, camera);
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+
+
+
+
+            var mapUrl = "../img/sand.jpg";
+            var map = THREE.ImageUtils.loadTexture(mapUrl);
+
+            // 加入一个平面floor
+            var floorMaterial = new THREE.MeshBasicMaterial({
+                map: map,
+                side: THREE.DoubleSide
+            });
+            var floorGeometry = new THREE.PlaneGeometry(600, 10000, 10, 10);
+            var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.position.y = -0.5;
+            floor.rotation.x = Math.PI / 2;
+            scene.add(floor);
+            
+            // 加入一个平面tracks
+            var trackMaterial = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                side: THREE.DoubleSide
+            });
+            var trackGeometry = new THREE.PlaneGeometry(20, 10000, 50, 10);
+            var track = new THREE.Mesh(trackGeometry, trackMaterial);
+            track.position.y = -0.5;
+            track.rotation.x = Math.PI / 2;
+            scene.add(track);
+            
+
+
+            
+            var light = new THREE.DirectionalLight( 0xffffff, 1.5);
+            light.position.set(1, 1, 1);
+            scene.add(light)
+            var mapUrl = "../img/grass.jpg";
+            var map = THREE.ImageUtils.loadTexture(mapUrl);
+
+            // 加入控制的cube
+            var cubeGeometry = new THREE.CubeGeometry(50, 50, 50, 1, 1, 1);
+            var wireMaterial = new THREE.MeshPhongMaterial({
+                color: "green",
+                wireframe: false
+            });
+            movingCube = new THREE.Mesh(cubeGeometry, wireMaterial);
+            movingCube.position.set(0, 50, 10);
+            scene.add(movingCube);
+            
+            // 加入控制的sphere
+            var sphereGeometry = new THREE.SphereGeometry(50, 50, 50);
+            var wireMaterial = new THREE.MeshPhongMaterial({
+                map: map,
+                wireframe: false
+            });
+            movingSphere = new THREE.Mesh(sphereGeometry, wireMaterial);
+            movingSphere.position.set(0, 50, 0);
+            scene.add(movingSphere);
+
+            
+            mControl = new MControl(container);
+            mControl.holdPage();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            update();
+            //camera.position.x--; 
+            //camera.position.y++; 
+            //camera.position.z++;
+            movingSphere.rotation.x -= 0.05; movingSphere.rotation.y -=0.05;
+            movingCube.rotation.x -= 0.01; movingCube.position.z -= 1;
+            floor.rotation.x += 1;
+        }
+
+        function update() {
+            var delta = clock.getDelta();
+            var moveDistance = 200 * delta;
+            var rotateAngle = Math.PI / 2 * delta;
+
+            if (keyboard.pressed("A")) {
+                movingCube.rotation.y += rotateAngle;
+            }
+            if (keyboard.pressed("D")) {
+                movingCube.rotation.y += rotateAngle;
+            }
+
+            if (keyboard.pressed("left")) {
+                movingCube.position.x -= moveDistance;
+            }
+            if (keyboard.pressed("right")) {
+                movingCube.position.x += moveDistance;
+            }
+            if (keyboard.pressed("up")) {
+                movingCube.position.z -= moveDistance;
+            }
+            if (keyboard.pressed("down")) {
+                movingCube.position.z += moveDistance;
+            }
+            
+            if(mControl.touched.moveCord.length>0 && mControl.touched.end){
+            if (mControl.touched.moveDirection == "right") {
+                movingCube.position.x += moveDistance;
+            }
+            if (mControl.touched.moveDirection == "left") {
+                movingCube.position.x -= moveDistance;
+            }
+            if (mControl.touched.moveDirection == "down") {
+                movingCube.position.z += moveDistance;
+            }
+            if (mControl.touched.moveDirection == "up") {
+                movingCube.position.z -= moveDistance;
+            }
+            mControl.touched.moveCord.shift()
+            }
+            
+
+            controls.update();
+        }
+    </script>
+</body>
+</html>
