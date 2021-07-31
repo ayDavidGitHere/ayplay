@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Play BounceBlocks</title>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/three.js">
+    </script>
+    <script src="http://localhost:8080/res/js/ThreeJs/Detector.js">
+    </script>
+    <script 
+        src="http://localhost:8080/res/js/ThreeJs/OrbitControls.js">
+    </script>
+    <script 
+        src="http://localhost:8080/res/js/ThreeJs/THREEx.KeyboardState.js">
+    </script>
+    <script 
+        src="http://localhost:8080/res/js/ThreeJs/THREEx.FullScreen.js">
+    </script>
+    <script
+        src="http://localhost:8080/res/js/ThreeJs/THREEx.WindowResize.js">
+    </script>
+
+
+    <script src="http://localhost:8080/res/js/ThreeJs_121/GLTFLoader.js"></script>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/DRACOLoader.js"></script>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/OBJLoader.js"></script>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/MTLLoader.js"></script>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/FBXLoader.js"></script>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/dat.gui.min.js"></script>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/fflate.min.js"></script>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/inflate.min.js"></script>
+    <script src="http://localhost:8080/res/js/ThreeJs_121/LoaderUtils.js"></script>
+
+
+    
+    
+    <script src="http://localhost:1111/lidsacaebasic.js"></script>
+    <script src="https://github.com/aydavid/res/lidsacaebasic.js"></script>
+    <script src="http://localhost:1111/aygraph2.js"></script>
+    <script src="https://github.com/aydavid/res/aygraph2.js"></script>
+    
+    
+    <script src="http://localhost:8080/res/js/ThreeJs/my.mcontrol.js"></script>
+    <script src="js/modules/modelLoader.js" type="text/javascript" defer>
+    </script>
+    <script src="js/modules/AddGeos.js" type="text/javascript" defer>
+    </script>
+    <script src="js/modules/main.js" type="text/javascript" defer>
+    </script>
+    <script src="js/modules/generator.js" type="text/javascript" defer>
+    </script>
+    <script src="js/modules/Cam_controlXYZ.js" type="text/javascript" defer>
+    </script>
+    <script src="js/modules/HBTO_controlXYZ.js" type="text/javascript" defer>
+    </script>
+    <script src="js/modules/GeosCustom.js" type="text/javascript" defer>
+    </script>
+    <script src="js/index.js" type="text/javascript" defer>
+    </script>
+    
+    
+    <style>
+        body {
+            background-color: #ff0086;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            top: 50px;
+        }
+        #canv2d{
+            background-color: blue;
+            position: absolute;
+            margin: 1px solid;
+            top: 800px;
+            display: none;
+        }
+        .contr-container {
+            background-color: rgba(11, 11, 55, 0.5);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: transform 0.5s 4s;
+            overflow-wrap: break-word;
+            max-width: 50%;
+        }
+        .logger-container{
+            max-width: 90%;
+            width: 50%;
+        }
+        .contr-container #contr {
+            color: white;
+            font-size: 1.5vh;
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+            padding-left: 20px;
+            overflow: normal;
+        }
+        .cam{
+            top: auto;
+            bottom: 10px;
+            width: 25%;
+            height: 250px;
+        }
+        .cambut{
+            display: block;
+            width: 50%;
+            height: 100%;
+            background-color: rgba(20, 20, 20, 0.2);
+            color: white;
+            text-align: center;
+            font-size: 2.5vh;
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+            overflow: hidden;
+        }
+        .cam-sub-container{
+            height: 32%;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+             justify-content: left; 
+             align-self: center;
+             border-color: black;
+             border-width: 1px;
+        }
+        
+        
+        
+        .hbto{
+            top: auto;
+            bottom: 10px;
+            left: 10px;
+            width: 25%;
+            height: 250px;
+        }
+        .hbtobut{
+            display: block;
+            width: 50%;
+            height: 100%;
+            background-color: rgba(20, 20, 20, 0.2);
+            color: white;
+            text-align: center;
+            font-size: 2.5vh;
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+            overflow: hidden;
+        }
+        .hbto-sub-container{
+            height: 32%;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+             justify-content: left; 
+             align-self: center;
+             border-color: black;
+             border-width: 1px;
+        }
+        #hbtoClicker{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #hbtoJoystick{
+            position: absolute;    display: none;
+            width: 40%;
+            height: 40%;
+            top: 30%; left:30%;
+            background-color: white;
+            border-radius: 50%;
+        }
+        #hbto_switchContr{
+            position: absolute;
+            width: 10%;
+            height: 10%;
+            top: 45%; left:45%;
+            background-color: red;
+            border-radius: 50%;
+        }
+        
+        
+        
+        
+        
+    </style>
+</head>
+<body>
+    <div class="contr-container logger-container">
+        <a id="downLink"><div id="contr"> Click to Download</div></a>
+    </div>
+    
+    
+    
+    <div class="cam contr-container">
+      <div id="camX" class="cam-sub-container">
+            <div class="cambut" id="plusX">+X</div>
+            <div class="cambut" id="minusX">-X</div>
+      </div>
+      <div id="camY" class="cam-sub-container">
+        <div class="cambut" id="plusY">+Y</div>
+        <div class="cambut" id="minusY">-Y</div>
+      </div>
+      <div id="camZ" class="cam-sub-container">
+        <div class="cambut" id="plusZ">+Z</div>
+        <div class="cambut" id="minusZ">-Z</div>
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div class="hbto contr-container">
+        
+        
+        
+      
+      <div  id="hbto_switchContr">.
+      </div>
+      
+        
+      <div id="hbtoClicker">
+          
+      <div id="hbtoZ" class="hbto-sub-container">
+            <div class="hbtobut" id="HBTO_none"></div>
+            <div class="hbtobut" id="HBTO_minusZ">&lt;Z</div>
+            <div class="hbtobut" id="HBTO_none"></div>
+      </div>
+
+      <div id="hbtoX" class="hbto-sub-container">
+            <div class="hbtobut" id="HBTO_minusX">&lt;X</div>
+            <div class="hbtobut" id="hbto_none_CXCY"></div>
+            <div class="hbtobut" id="HBTO_plusX">X&gt; </div>
+      </div>
+      
+      <div id="hbtoX" class="hbto-sub-container">
+            <div class="hbtobut" id="HBTO_none"></div>
+            <div class="hbtobut" id="HBTO_plusZ"> Z&gt;</div>
+            <div class="hbtobut" id="HBTO_none"></div>
+      </div>
+      
+      <div id="hbtoY" class="hbto-sub-container" style="display: none">
+        <div class="hbtobut" id="HBTO_plusY">Y ∧</div>
+        <div class="hbtobut" id="HBTO_minusY"> ∨ Y</div>
+      </div>
+        
+      </div>
+      
+      
+      
+      
+      <div id="hbtoJoystick">
+      </div>
+      
+    </div>
+    
+    
+
+    
+    <canvas id="canv2d" width="100" height="200"></canvas>
+    <!--<div id="message" style="color:green; background-color: #a06cc2"></div>-->
+    <div id="ThreeJS"></div>
+    <audio src="sound/explode.mp3" preload="auto" id="explode_sound"></audio>
+</body>
+</html>
