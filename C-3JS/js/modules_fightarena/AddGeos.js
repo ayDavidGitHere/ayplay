@@ -478,7 +478,7 @@ function AddGeos(scene, collideMeshList){
         console.log("skeleton...", addGeos.skeleton);
         var names = "skeleton: ";
         addGeos.skeleton.animations.map((animation, index)=>{
-            names += "  "+index+": "+animation.name;
+            names += "    {  "+index+": "+animation.name+"  }     ";
         });
         console.log(names);
         //BO add animation
@@ -512,7 +512,7 @@ function AddGeos(scene, collideMeshList){
         console.log("hero...", addGeos.hero);
         var names = "hero: ";
         addGeos.hero.animations.map((animation, index)=>{
-            names += "  "+index+": "+animation.name;
+            names += "    {  "+index+": "+animation.name+"  }     ";
         });
         console.log(names);
         //BO add animation
@@ -523,10 +523,10 @@ function AddGeos(scene, collideMeshList){
         .clipAction(addGeos.hero.animations[3]);
         //runDownAction
         addGeos.hero.runDownAction = addGeos.hero.animationMixer
-        .clipAction(addGeos.hero.animations[1]);
+        .clipAction(addGeos.hero.animations[3]);//1
         //runUpAction
         addGeos.hero.runUpAction = addGeos.hero.animationMixer
-        .clipAction(addGeos.hero.animations[10]);
+        .clipAction(addGeos.hero.animations[6]);//6
         //hit1Action
         addGeos.hero.hit1Action = addGeos.hero.animationMixer
         .clipAction(addGeos.hero.animations[7]);

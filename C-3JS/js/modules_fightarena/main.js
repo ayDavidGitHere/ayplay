@@ -6,7 +6,7 @@ var container, scene, camera, OrbitCamera, renderer, controls, orbitControl;
 var TPCamera, OrbitCamera;
 var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock();
-var time = {};
+var time = {now: null, last: null};
 var mControl;
 var collideMeshList = [];   
 var message = document.getElementById("message");
@@ -205,8 +205,8 @@ function view_init() {
 function loadChecker() {   
     if(
      true
-     &&addGeos.skeleton == null
-     &&addGeos.hero == null
+     &&addGeos.skeleton != null
+     &&addGeos.hero != null
      )
     {
         stateScreen.Game.loading = 100;
@@ -221,31 +221,27 @@ function animate() {
 
 
 function update() {
-    logger.innerText = "";
     time.now = new Date();
-    if(time.last === null) time.last = time.now;
+    if(time.last === null) time.last = time.now-20000;
     time.fps = 1000/(time.now-time.last);
+    
+    
+    logger.innerText = "";
+    
+    
+    
     
     
     
     
     orbitControl.update();
-    
-    
-    (function(){
-    if(addGeos.skeleton == null) return;
     //BO AnimationHandler
     if (addGeos.skeleton.animationMixer !== null)
     addGeos.skeleton.animationMixer.update(clock.getDelta());
-    })();
     
     //BO hero
-    (function(){
-    if(addGeos.hero == null) return;
-    
     //hero 
     hero.model = addGeos.hero;
-    
     //hero motion
     addGeos.hero.animationMixer.update(clock.getDelta());
     if(hero.moving){
@@ -255,7 +251,6 @@ function update() {
     }
     addGeos.hero.position.x += hero.speed*(1/time.fps)*hero.directionX*-1;
     addGeos.hero.position.z += hero.speed*(1/time.fps)*hero.directionZ*-1;
-    
     //hero rotor
     if(addGeos.hero.rotating == "left") addGeos.hero.rotation.y += 0.2%6.3;
     if(addGeos.hero.rotating == "right") addGeos.hero.rotation.y -= 0.2%6.3;
@@ -279,25 +274,9 @@ function update() {
     //BO AnimationHandler
     if (addGeos.hero.animationMixer != null) 
     addGeos.hero.animationMixer.update(clock.getDelta());
-    
-    
+    //prog
     prog();
-    })();
     
-    //BO Ninja
-    (function(){
-    if(addGeos.Ninja == null) return;
-    //BO AnimationHandler
-    if (addGeos.Ninja.animationMixer) 
-    addGeos.Ninja.animationMixer.update(clock.getDelta());
-    console.log(addGeos.Ninja.animationMixer)
-    })();
-    
-    
-    (function(){
-    if(addGeos.skeleton == null) return;
-    addGeos.skeleton.position.z -= 0*(1/time.fps);
-    })();
     
     
     
@@ -336,19 +315,20 @@ function prog(){
 var sel1 = null;
 var sel2 = null;
 var sels = null;
-var currentInd = null;
+var currentInd = 0;
 function camselectlistener(){
     sel1 = document.querySelector("camselect sel#sel1");
     sel2 = document.querySelector("camselect sel#sel2");
     sels = [sel1, sel2];
-    sels.map((sel, ind)=>{
-        sel.onclick = function(){ camSelect(sels, ind); currentInd = ind; };
+    sels.map((sel, ind, sels)=>{
+        sel.onclick = function(){ camSelect(sels, ind); };
     });
     sel2.click();
 }//EO camselectlistener
 
 
 function camSelect(sels, ind){
+    currentInd = ind;
     sels.map((sel)=>{
         sel.style.backgroundColor = "white";
         sel.style.opacity = 1;
