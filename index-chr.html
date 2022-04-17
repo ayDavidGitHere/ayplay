@@ -1,0 +1,444 @@
+<html>
+    <head>
+    <script>
+;(function () {
+    let src = '//cdn.jsdelivr.net/npm/eruda';
+    src = 'http://localhost:1111/eruda/eruda.min.js';
+    //if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+})();
+    </script>
+<script src="http://192.168.43.1:1111/CodeHelps/src/CodeHelps.js"></script>
+<script src="http://localhost:1111/CodeHelps/src/CodeHelps.js"></script>
+<script src='./js/Main.js'></script>
+
+
+
+
+
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+<link rel="stylesheet" href="css/constant.css"> 
+    <style>
+    :root{
+        --xIconATransform: rotate(0deg);
+        --xIconBTransform: rotate(0deg);
+    }
+    body{
+        background-color: #000817;
+        width: 100%; height: 100%;
+        margin: 0; padding: 0;
+        overflow-x: hidden;
+    }    
+    a{text-decoration: none;}
+    header{
+        display: block; width:90%; box-sizing: border-box;
+        margin: 20px auto;
+        border-radius: 5px;
+        padding: 20px; text-align: center; 
+        font-weight: 1000; font-style: bold; font-size: 45px;
+        background: linear-gradient(to right, #ffffff44, #00081744);
+        backdrop-filter: blur(25px);
+        color: white;
+    }    
+    #menu-list{
+        text-align: center;
+        width: 100%; 
+    }
+    .menu-item{
+        display: inline-block; margin: 10px 10px;
+        text-align: center; color: transparent;
+    }
+    .menu-item::hover{
+        transform: scale(0.8, 0.8);
+    }
+    .menu-item p{
+        display: inline; font-weight:500;
+        text-align: center; margin-top: 10px;
+        font-size: 0.8rem; font-family: pF; 
+    }    
+    .menu-item icon{
+        display: block;
+        width: 28px;; height: 28px;;
+        background-color: crimson;
+        opacity: 0.7;
+    }    
+    .menu-item[t-box] icon{
+        width: 0px; height: 0px;
+        margin-left: 14px; margin-bottom: 14px;
+        transition: width,height,margin-left,margin-bottom 1s,1s ease-out;
+        background-color: transparent;
+        border: 2px solid crimson;
+    }    
+    .menu-item[t-triangle] icon{
+        background-color: transparent;
+        width: 0px;
+        height: 0px;
+        border-left: 14px solid transparent;
+        border-right: 14px solid transparent;
+        border-bottom: 28px solid crimson;
+        border-bottom-width: 0px;
+        transition: border-bottom-width 1s ease-out;
+    }    
+    .menu-item[t-o] icon{
+        border-radius: 100%;
+        width: 0px; height: 0px;
+        margin-left: 14px; margin-bottom: 14px;
+        transition: width,height,margin-left,margin-bottom 1s,1s ease-out;
+        background-color: transparent;
+        border: 2px solid crimson;
+    }    
+    .menu-item[t-x] icon{
+        position: relative;
+        background-color: transparent;
+    }    
+    .menu-item[t-x] icon::before{
+         content: ""; position: absolute; 
+         width: 7px; height: 28px;
+         background: linear-gradient(to top, crimson, #ff7900);
+         transform: var(--xIconBTransform);
+         transition: transform 1s ease-out;
+    }    
+    .menu-item[t-x] icon::after{
+         content: ""; position: absolute; 
+         width: 7px; height: 28px;
+         background: linear-gradient(to bottom, crimson, #ff7900);
+         transform: var(--xIconATransform);
+         transition: transform 1s ease-out;
+    }    
+    
+    
+    #welcome-sect{
+        margin: 100px auto;
+        position: relative;
+        z-index: 1;
+        border-radius: 60% 40% 30% 70% / 60% 90% 40% 70% ;
+        background-color: #ff7900;
+        background: linear-gradient(to right bottom, #ff7900, crimson);
+        min-height: 150px;
+        width: 100%; box-sizing: border-box;
+    }
+@media only screen and (min-width: 601px){
+    #welcome-sect{
+        width: 50%;
+    }
+}    
+@media only screen and (min-width: 901px){
+    #welcome-sect{
+        width: 30%;
+    }
+}    
+    #welcome-sect p#welcome-sect-main{
+        color: white; margin-left: 20px; margin-right: 100px;
+        font-weight: 1000; font-style: bold; font-size: 38px;
+        font-family: h2F; word-wrap: break-word;
+        position: relative;
+    }
+    #welcome-sect p#welcome-sect-main gs{
+        background-color: transparent;
+        border-bottom-right-radius: 50px; position: relative; padding: 10px;
+        font-family: hF; font-weight: 1000; font-style: bold;
+        color: #000817;
+    }/*
+    #welcome-sect p#welcome-sect-main gs::before{
+        display: block;
+        border: 2px solid #000817; content: ""; position: absolute;
+        background-color: transparent; width: 200px; height: 50px;
+        border-radius: 50%;// transform: translateY(-50%);
+        top: -50% left: 0%; z-index: -1; 
+        animation: rotate-3 ease-out 7.6s infinite;
+    }
+    #welcome-sect p#welcome-sect-main gs::after{
+        display: block;
+        border: 2px solid #000817; content: ""; position: absolute;
+        background-color: transparent; width: 160px; height: 80px;
+        border-radius: 50%; transform: rotate(45deg);
+        top: 0% left: 0%; z-index: -1; //transform: translate(50px, 0);
+        animation: rotate-2 ease-out 7s infinite;
+    }
+    */
+    
+@keyframes rotate-1{ 
+    0% {    transform: rotate(-45deg) scale(1,1);  height: 80px; }
+    60% {    transform: rotate(135deg) scale(0.5,0.5);  height: 10px; }
+    100% {    transform: rotate(315deg) scale(1,1);  height: 80px; }
+}    
+@keyframes rotate-2{ 
+    0% {    transform: rotate(0deg);   }
+    40% {    transform: rotate(180deg);  }
+    100% {    transform: rotate(360deg);   }
+}    
+@keyframes rotate-3{ 
+    0% {    transform:  scale(1,1);   }
+    60% {    transform: scale(0,1);   }
+    100% {    transform: scale(1,1);  }
+}    
+    
+    
+    #games-list{
+        margin-top: 100px;
+    }    
+    #games-list>gb{
+        text-decoration: none;
+        word-wrap: break-word; color: white;
+        padding: 10px 20px;
+        background: #ffffff44; 
+        background: linear-gradient(to bottom, #00081744, #ffffff44);
+        //background: linear-gradient(to bottom, #ffffff44, #ffffff44);
+        //background: linear-gradient(to bottom, #00081744, #00081744);
+        border-radius: 5px;
+        display: block; width: 90%;
+        min-height: 200px; margin: 50px auto;
+        padding: 20px; box-sizing: border-box;
+        position: relative;
+        transition: background 2000ms ease;
+    }    
+    
+    
+    #games-list>gb game-name{
+        color: crimson;
+        font-weight: 500; font-style: bold; font-size: 25px;
+        font-family: p2F; 
+    }    
+    #games-list>gb game-story{
+        color: white;
+        font-weight: 1000; font-style: bold; font-size: 30px;
+        font-family: hF; 
+        padding-right: 50px;
+    }    
+    #games-list>gb play-but{
+        display: block;
+        width: 80px; height: 16px;
+        padding: 8px 16px; color: white;
+        background: linear-gradient(to right, crimson, #ff7900);
+        border-radius: 50px;
+        position: absolute; top: 100%;
+        transform: translate(0, -50%);
+    }    
+    #games-list>gb play-but icon{
+        
+    }    
+    #games-list>gb play-but icon::before{
+         content: ""; position: absolute; 
+         width: 7px; height: 28px;
+         background: #000817;
+         transform: rotate(-45deg);
+         top: 0;
+         animation: icon-effect-1 ease-out 7s infinite;
+    }    
+    #games-list>gb play-but icon::after{
+         content: ""; position: absolute; 
+         width: 7px; height: 28px;
+         background: #000817;
+         transform: rotate(45deg);
+         top: 0;
+         animation: icon-effect-2 ease-out 7s infinite;
+    }    
+    #games-list>gb play-but text{
+        color: white;
+        font-size: 20px; font-weight: 500px; font-family: pF;
+        margin-left: 30px; position: absolute;
+        top: 50%; transform: translate(0, -50%);
+    }    
+    #games-list>gb game-type{
+        display: block;
+        height: 16px;
+        padding: 8px 16px; color: white;
+        background: linear-gradient(to right, #ff7900, crimson);
+        border-radius: 50px;
+        position: absolute; top: 100%; left: 100%;
+        transform: translate(-100%, -50%); 
+        font-size: 20px; font-weight: 500px; font-family: pF;
+    }
+    
+@media only screen and (min-width: 601px){
+    #games-list{
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+    }
+    #games-list>gb{
+        flex: 1;
+        justify-self: center;
+        width: 45%;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}    
+@media only screen and (min-width: 901px){
+    #games-list{
+        //display: flex;
+        //justify-content: center;
+        //justify-items: center;
+        display: block;
+    }
+    #games-list>gb{
+       /* //flex: 1;
+        //justify-self: center;*/
+        width: 30%;
+        margin-left: 1%;
+        margin-right: 1%;
+        display: inline-block;
+    }
+}    
+    
+    
+    
+@keyframes icon-effect-1{ 
+    0% {    transform: rotate(-45deg);   }
+    60% {    transform: rotate(135deg);  }
+    100% {    transform: rotate(315deg);   }
+}    
+@keyframes icon-effect-2{ 
+    0% {    transform: rotate(45deg);   }
+    60% {    transform: rotate(225deg);  }
+    100% {    transform: rotate(405deg);   }
+}    
+    
+    
+    
+    
+    
+    
+    
+    
+    </style>
+    </head>
+    <body>
+        <header><!--ayplay.io-->
+        <div id="menu-list" >
+        <div class="menu-item" t-x>
+            <icon></icon>
+            <p>sigin-in </p>
+        </div>
+        <div class="menu-item" t-triangle>
+            <icon></icon>
+            <p>games </p>
+        </div>
+        <div class="menu-item" t-box>
+            <icon></icon>
+            <p>about</p>
+        </div>
+        <div class="menu-item" t-o>
+            <icon></icon>
+            <p>records </p>
+        </div>
+        </div>
+        </header>
+        <section id="welcome-sect">
+            <p id="welcome-sect-main">Discover Amazing Web Games Here on <gs>ayplay</gs></p>
+            <br><br><br><br>
+        </section>
+        
+        
+        
+        
+        <section id="games-list">
+            <gb class="" id="" scroll-point="gb-1">
+                <game-name>quarter</game-name>
+                <br><br>
+                <game-story>A math-puzzle game. </game-story>
+                <play-but>
+                    <a href="./looop.html">
+                    <icon></icon>
+                    <text>play</text>
+                    </a>
+                </play-but>
+                <game-type>Board</game-type>
+            </gb>
+            
+            <gb class="" id="" scroll-point="gb-2">
+                <game-name>chase the moon</game-name>
+                <br><br>
+                <game-story>Race to the moon</game-story>
+                <play-but>
+                    <a href="./run.html">
+                    <icon></icon>
+                    <text>play</text>
+                    </a>
+                </play-but>
+                <game-type>2d</game-type>
+            </gb>
+            <gb class="" id="" scroll-point="gb-3">
+                <game-name>deadRun</game-name>
+                <br><br>
+                <game-story>Avoid the dangers in the dead</game-story>
+                <play-but>
+                    <a href="./deadrun">
+                    <icon></icon>
+                    <text>play</text>
+                    </a>
+                </play-but>
+                <game-type>3d</game-type>
+            </gb>
+            <gb class="" id="" scroll-point="gb-4">
+                <game-name>Dead Pass</game-name>
+                <br><br>
+                <game-story>Fight the dead to escape</game-story>
+                <play-but>
+                    <a href="./deadpass">
+                    <icon></icon>
+                    <text>play</text>
+                    </a>
+                </play-but>
+                <game-type>3d</game-type>
+            </gb>
+            <gb class="" id="" scroll-point="gb-5">
+                <game-name>6 balls</game-name>
+                <br><br>
+                <game-story>Be in the top 3 fastest to move to the next floor</game-story>
+                <play-but>
+                    <a href="./run.html">
+                    <icon></icon>
+                    <text>play</text>
+                    </a>
+                </play-but>
+                <game-type>3d</game-type>
+            </gb>
+            
+            
+        </section>
+        
+        
+        <br><br><br><br><br>
+        
+    </body>
+<script>
+(function(){
+    let xIcon = DOMHelp._(".menu-item[t-x] icon");
+    setTimeout(()=>{
+        document.documentElement.style
+        .setProperty("--xIconATransform", "rotate(-45deg)");
+        document.documentElement.style
+        .setProperty("--xIconBTransform", "rotate(45deg)");
+        xIcon.parentNode.style.color = "white";
+    },0);
+    let trIcon = DOMHelp._(".menu-item[t-triangle] icon");
+    setTimeout(()=>{
+        trIcon.style.borderBottomWidth = "28px";
+        trIcon.parentNode.style.color = "white";
+    },1000);
+    let bIcon = DOMHelp._(".menu-item[t-box] icon");
+    setTimeout(()=>{
+        bIcon.style.width = "28px";
+        bIcon.style.height = "28px";
+        bIcon.style.marginLeft = "0px";
+        bIcon.style.marginBottom = "0px";
+        bIcon.parentNode.style.color = "white";
+    },2000);
+    let oIcon = DOMHelp._(".menu-item[t-o] icon");
+    setTimeout(()=>{
+        oIcon.style.width = "28px";
+        oIcon.style.height = "28px";
+        oIcon.style.marginLeft = "0px";
+        oIcon.style.marginBottom = "0px";
+        oIcon.parentNode.style.color = "white";
+    },3000);
+})();
+</script>
+</html>
+<!--- 
+cd            /storage/emulated/0/compilerInternalSonyX/projects/Branch1/web_projects/gamespace.io                   
+php -S localhost:8001
+    
+->

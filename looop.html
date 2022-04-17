@@ -1,0 +1,286 @@
+<html>
+    <head>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+<link rel="stylesheet" href="css/constant.css"> 
+    <style>
+html,body{
+    background-color: white;// #000817;
+    width: 100%; height: 100%;
+    margin: 0; padding: 0;
+}    
+
+@keyframes icon-effect-1{ 
+    0% {    transform: rotate(-45deg);   }
+    60% {    transform: rotate(135deg);  }
+    100% {    transform: rotate(315deg);   }
+}    
+@keyframes icon-effect-2{ 
+    0% {    transform: rotate(45deg);   }
+    60% {    transform: rotate(225deg);  }
+    100% {    transform: rotate(405deg);   }
+}    
+    
+    
+    
+    
+#game-box{
+    width: 300px;
+    height: 300px;
+    border: 2px solid orangered;
+    border-radius: 20px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    top: 50%; transform: translateY(-50%);
+    font-weight: 1000; font-style: bold;
+}    
+#game-box .cells{
+    font-size: 25px; font-family: pF;
+    color: #000817; 
+    text-align: center;
+    background-color: white;// rgba(255,255,255,0.2);
+    transition: left 0.5s ease-in;
+}   
+#game-box .cells[on=""]{
+    background-color: orangered;
+}    
+#game-box .cells[hot=""]{
+    background-color: midnightblue;
+}    
+    
+    
+    </style>
+    </head>
+    <body>
+        
+        <div id="game-box">
+            
+        </div>
+        
+    </body>
+<script>
+let GAME = {};
+GAME.STATES = 
+[    
+    {name: "now", val: 1},
+    {name: "loading", },
+    {name: "on",},
+    {name: "paused",},
+];
+    
+    
+    
+let gameBox = document.getElementById("game-box");
+gameBox.innerHTML = "";
+gameBoxInnerHTML = "";
+let rowSize = 5; let colSize = 5;
+console.log("yo");
+for(let i=0; rowSize>i; i++){
+    for(let j=0; colSize>j; j++){
+        let rowno = (i+1); let colno=(j+1);
+        let min = 3*(colno-3)-2; let max = 3*(colno-3);
+        gameBoxInnerHTML += 
+        "<div "
+        +"class='cells' rowno='"+rowno+"' colno='"+colno+"'"
+        +(colno>3?" on=''":'')
+        +">"
+        +(colno>3?Math.floor(Math.random()*(max-min+1)+min):"")
+        +"</div>"
+    }
+}    //EO for
+gameBox.innerHTML += gameBoxInnerHTML ;
+console.log(gameBox);
+[...document.querySelectorAll(".cells")].map((el, index)=>{
+    index = index+1;
+    
+    if(index===20){
+        el.setAttribute("hot", "");
+        el.style.backgroundColor = "#000817";//"rgba(255,255,255,0.4)";
+        el.style.color = "orangered";
+    }
+    el.style.width = gameBox.clientWidth/rowSize;
+    el.style.height = gameBox.clientHeight/colSize;
+    el.style.border = "0.1px solid rgba(255,255,255,0.2)";
+    el.style.boxSizing = "border-box";
+    el.style.position = "absolute";
+    el.style.left = 100*(el.getAttribute("rowno")-1)/rowSize+"%";
+    el.style.top = 100*(el.getAttribute("colno")-1)/colSize+"%";
+    el.onclick = function(){
+        console.log(elHot, "\n", el)
+        //swapAction(elHot, el);
+    }
+})  
+    
+    
+    
+let elHot = "";
+let swapAction = function(elHot, sEl){
+    
+}    
+let swapEventListener = function(){
+    var prev_ePX = 0;  var prev_ePY = 0; 
+    var ePX=0; var ePY=0;
+    let moveStreakX = {direction: "right", list: []};
+    gameBox.ontouchstart = function(ev){
+        elHot = document.querySelector(".cells[hot='']");
+        ev.preventDefault();
+        ePX = ev.touches[0].pageX;
+        ePY = ev.touches[0].pageY;
+        prev_ePX = ePX;
+        prev_ePY = ePY;
+        
+    }//EO ontouchstart
+    gameBox.ontouchmove = function(ev){
+        ev.preventDefault();
+        ePX = ev.touches[0].pageX;
+        ePY = ev.touches[0].pageY;
+        diff_ePX = ePX-prev_ePX;
+        diff_ePY = ePY-prev_ePY;
+        if(diff_ePX <0) moveStreakXDirection = "left"
+        if(diff_ePX >0) moveStreakXDirection = "right";
+        if(moveStreakXDirection != moveStreakX.direction){
+            moveStreakX.list = [];
+        }
+        moveStreakX.direction = moveStreakXDirection;
+        moveStreakX.list.push(diff_ePX);
+        if(moveStreakX.list.length>0){ 
+            console.log(moveStreakX)
+            //elHot.innerText = moveStreakX.direction;
+        }
+        
+        
+        prev_ePX = ePX;
+        prev_ePY = ePY;
+    }//EO ontouchmove
+    gameBox.ontouchend = function(ev){  
+        ev.preventDefault();
+        if(moveStreakX.list.length>0){ 
+        let moveSign = (moveStreakX.direction=="left"?-1:1);
+        console.log(moveSign)
+        let sRowno = elHot.getAttribute("rowno")-1*moveSign;
+        let sColno = elHot.getAttribute("colno");
+        console.log(sRowno, sColno);
+        let sEl = document.
+        querySelector(".cells[rowno='"+sRowno+"'][colno='"+sColno+"']");
+        sEl.style.left = 
+        (Number(sEl.style.left.replace("%",""))+20*moveSign)+"%";
+        elHot.style.left = 
+        (Number(elHot.style.left.replace("%",""))-20*moveSign)+"%";
+        console.log(elHot.style.left);
+        
+        
+        let sElInnerText = sEl.innerText;
+        let elHotInnerText = elHot.innerText;
+        sEl.setAttribute("hot", "");
+        sEl.style.left = 100*(sEl.getAttribute("rowno")-1)/rowSize+"%";
+        sEl.style.backgroundColor = "#000817";//"rgba(255,255,255,0.4)";
+        sEl.style.color = "orangered";
+        sEl.innerText = Number(elHotInnerText);//+Number(sElInnerText)+moveSign;
+        
+        elHot.removeAttribute("hot", "");
+        elHot.style.left = 100*(elHot.getAttribute("rowno")-1)/rowSize+"%";
+        elHot.style.backgroundColor = "orangered";
+        elHot.style.color = "#000817";
+        elHot.innerText = sElInnerText;
+        }//EO  
+        
+        moveStreakX.list = [];
+        checkMatch();
+    }//EO ontouchstart
+          
+}    
+swapEventListener();
+    
+    
+    
+    
+let hotTimeout = function(){
+let reTime = function(){
+for(let j=0; colSize>j; j++){
+let firstOn = document.querySelectorAll(".cells[on='']")[j*5];
+if(firstOn === null) break;
+let firstOnRowNo = firstOn.getAttribute("rowno");
+let firstOnColNo = firstOn.getAttribute("colno");
+console.log(firstOnColNo, firstOnRowNo)
+let rowElements = [];
+for(let i=0; colSize+1>i; i++){
+    rowElements.push(
+    document.querySelector(
+    ".cells[rowno='"+(Number(firstOnRowNo)+i)+"'][colno='"+firstOnColNo+"']"
+    )
+    );//EO push.
+}    
+rowElements.map((el)=>{
+        let elRowNo = el.getAttribute("rowno");
+        let elColNo = el.getAttribute("colno");
+        let aboveEl = 
+        document.querySelector(
+        ".cells"
+        +"[rowno='"+elRowNo+"']"
+        +"[colno='"+(Number(elColNo)-1)+"']"
+        );
+        
+        let sElInnerText = aboveEl.innerText;
+        let elInnerText = el.innerText;
+        aboveEl.setAttribute("on", "");
+        aboveEl.style.backgroundColor = "orangered";//"rgba(255,255,255,0.4)";
+        aboveEl.style.color = "#000817";
+        aboveEl.innerText = Number(elInnerText);//+Number(sElInnerText)+moveSign;
+});
+        
+if(firstOnColNo>0) window.setTimeout(reTime, 5000);
+}//EO for()
+}//EO reTime;
+window.setTimeout(reTime, 5000);
+}   //EO hotTimeout
+hotTimeout();
+    
+    
+    
+//Set First Row
+let firstOnRowElements = [];
+
+//Check Match
+let checkMatch = function(){
+    let firstOn = document.querySelectorAll(".cells[on='']")[0];
+    let firstOnRowNo = firstOn.getAttribute("rowno");
+    let firstOnColNo = firstOn.getAttribute("colno");
+    console.log(firstOnColNo, firstOnRowNo)
+    firstOnRowElements = [];
+    for(let i=0; colSize>i; i++){
+    firstOnRowElements.push(
+    document.querySelector(
+    ".cells[rowno='"+(Number(firstOnRowNo)+i)+"'][colno='"+firstOnColNo+"']"
+    )
+    );//EO push.
+    }
+    
+    let matchListUp = [];
+    let matchTextUp = [];
+    let matchTextDown = [];
+    firstOnRowElements.map((el)=>{
+        console.log(el)
+        //el.style.backgroundColor = "red";
+        let elRowNo = el.getAttribute("rowno");
+        let elColNo = el.getAttribute("colno");
+        let belowEl = 
+        document.querySelector(
+        ".cells"
+        +"[rowno='"+elRowNo+"']"
+        +"[colno='"+(Number(elColNo)+1)+"']"
+        );
+        //belowEl.style.backgroundColor = "green";
+        matchTextUp.push( Number(el.innerText)%3 );
+        matchTextDown.push( Number(belowEl.innerText)%3 );
+    });
+    console.log(matchTextUp, matchTextDown)
+    matchTextUp.map((a, ind)=>{
+        if(a != matchTextDown[ind] || ind==0)matchListUp = [];
+        matchListUp.push(a)
+    });
+    //if(matchListUp.length>=3)alert("")
+    
+}//EO checkMatch
+    
+    </script>
+</html>

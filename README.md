@@ -1,2 +1,0 @@
-# ayplay
-Play Aydavid games

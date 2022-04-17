@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--meta name="viewport" content="width=device-width, height=device-height, initial-scale=1"-->
+    <title>Play Index</title>
+    <script>
+
+///*
+var res1_addr = "http://localhost:1111";// "http://192.168.43.1:1111";
+var res_addr = "http://localhost:8080";//"http://192.168.43.1:8080";
+var res2_addr = "http://localhost:8000";//"http://192.168.43.1:8000";
+var site_host = "http://localhost";
+//*/
+/*
+var res1_addr = "http://192.168.43.1:1111";
+var res_addr = "http://192.168.43.1:8080";
+var res2_addr = "http://192.168.43.1:8000";
+var site_host = "http://192.168.43.1";*/
+window.addrs = {res: res_addr, res1: res1_addr, res2: res2_addr};
+window.site = {host: site_host};
+;(function () {
+    var src = '//cdn.jsdelivr.net/npm/eruda';
+    src = site_host+':1111/eruda/eruda.min.js';
+    //if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+})();
+
+
+;(function () { 
+    document.write(`
+    <scr`+`ipt src="${res1_addr}/lidsacaebasic.js"></scr`+`ipt>
+    <scr`+`ipt src="https://github.com/aydavid/res/lidsacaebasic.js"></scr`+`ipt>
+    <scr`+`ipt src="${res1_addr}/aygraph2.js"></scr`+`ipt>
+    <scr`+`ipt src="https://github.com/aydavid/res/aygraph2.js"></scr`+`ipt>
+    `
+    );
+})();
+    </script>
+    <style>
+        body {
+            background-color: #000817;
+            overflow: hidden;
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+        section #ThreeJS{
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+    </style>
+</head>
+<body>
+    <section id="ThreeJS"></section>
+    <a href="/deadpass" style="color: white"> <h1>click me to be the best</h1></a>
+    <a href="/deadrun" style="color: white"> <h1>gasssssss me to be the best</h1></a>
+    <logger style="width: 300px; height:100px; background-color: #000867dd; color:white; position: absolute; top: 0px;" id="logger"></logger>
+    <camselect style="width: 300px; height:100px; background-color: #00a867dd; color:white; position: absolute; top: 0px; right: 0px; " id="cam">
+        <sel style="height: 100%; width: 50%; display: block; background-color: green; float: left;" id="sel1"></sel>
+        <sel style="height: 100%; width: 50%; display: block; background-color: yellow; float: left;" id="sel2"></sel>
+    </camselect>
+</body>
+
+
+<script>
+;(function () {
+    document.write(`
+    <scr`+`ipt src="${res2_addr}/js/routes.js" noremove></scr`+`ipt>
+    `);
+})();
+</script>
+</html>
+<!--- 
+cd            /storage/emulated/0/compilerInternalSonyX/projects/Branch1/web_projects/gamespace.io/CTG-ThreeJs      
+php -S localhost:8000
+    
+->

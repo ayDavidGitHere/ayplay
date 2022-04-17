@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Play BounceBlocks</title>
+    <script>
+;(function () {
+    var src = '//cdn.jsdelivr.net/npm/eruda';
+    src = 'http://localhost:1111/eruda/eruda.min.js';
+    //if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+})();
+;(function () {
+    var site = ".";//"http://192.168.43.1:8080";
+    var res1_addr = "http://localhost:1111";// "http://192.168.43.1:1111";
+    var res_addr = "http://localhost:8080";//"http://192.168.43.1:8888";
+    document.write(`
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/three.js">
+    </scr`+`ipt>
+    <scr`+`ipt src="${site}/js/Detector.js">
+    </scr`+`ipt>
+    <scr`+`ipt type="module" src="${site}/js/OrbitControls.js">
+    </scr`+`ipt>
+    <scr`+`ipt src="${site}/js/THREEx.KeyboardState.js">
+    </scr`+`ipt>
+    <scr`+`ipt  src="${site}/js/THREEx.FullScreen.js">
+    </scr`+`ipt>
+    <scr`+`ipt src="${site}/js/THREEx.WindowResize.js">
+    </scr`+`ipt>
+
+
+    <scr`+`ipt type="module" src="${res1_addr}/ThreeJs_121/GLTFLoader.js"></scr`+`ipt>
+    <scr`+`ipt type="module" src="${res1_addr}/ThreeJs_121/DRACOLoader.js"></scr`+`ipt>
+    <scr`+`ipt type="module" src="${res1_addr}/ThreeJs_121/OBJLoader.js"></scr`+`ipt>
+    <scr`+`ipt type="module" src="${res1_addr}/ThreeJs_121/MTLLoader.js"></scr`+`ipt>
+    <scr`+`ipt type="module" src="${res1_addr}/ThreeJs_121/FBXLoader.js"></scr`+`ipt>
+    <scr`+`ipt src="${res1_addr}/ThreeJs_121/dat.gui.min.js"></scr`+`ipt>
+    <scr`+`ipt type="module" src="${res1_addr}/ThreeJs_121/fflate.min.js"></scr`+`ipt>
+    <scr`+`ipt src="${res1_addr}/ThreeJs_121/inflate.min.js"></scr`+`ipt>
+    <scr`+`ipt type="module" src="${res1_addr}/ThreeJs_121/LoaderUtils.js"></scr`+`ipt>
+    
+    
+    
+    <scr`+`ipt src="${res1_addr}/lidsacaebasic.js"></scr`+`ipt>
+    <scr`+`ipt src="https://github.com/aydavid/res/lidsacaebasic.js"></scr`+`ipt>
+    <scr`+`ipt src="${res1_addr}/aygraph2.js"></scr`+`ipt>
+    <scr`+`ipt src="https://github.com/aydavid/res/aygraph2.js"></scr`+`ipt>
+    
+    
+    <scr`+`ipt src="${site}/js/modules/GeosCustom.js" type="text/javascr`+`ipt" defer></scr`+`ipt>
+    <scr`+`ipt src="${site}/js/modules/AddGeos.js" type="text/javascr`+`ipt" defer></scr`+`ipt>
+    <scr`+`ipt src="${site}/js/modules/main.js" type="text/javascr`+`ipt" defer>
+    
+    </scr`+`ipt>
+    <scr`+`ipt src="${site}/js/index.js" type="text/javascr`+`ipt" defer>
+    </scr`+`ipt>
+    `
+    );
+})();
+    </script>
+    <style>
+        body {
+            background-color: #000817;
+            overflow: hidden;
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+        section #ThreeJS{
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+    </style>
+</head>
+<body>
+    <section id="ThreeJS"></section>
+    <logger style="width: 100px; height:100px; background-color: #000867dd; color:white; position: absolute; top: 0px;" id="logger"></logger>
+</body>
+</html>
+<!--- 
+/storage/emulated/0/compilerInternalSonyX/projects/Branch1/web_projects/WITAY
+->

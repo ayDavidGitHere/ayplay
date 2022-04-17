@@ -1,0 +1,462 @@
+<html>
+    <head>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+<link rel="stylesheet" href="css/constant.css"> 
+<style>
+    html,body{
+        background-color: white;// #000817;
+        width: 100%; height: 100%;
+        margin: 0; padding: 0; background-color: #000817;//rgba(100,120,1060);
+    }    
+    game-title{
+        padding: 5px 10px;
+        background-color:  #000817aa;//rgba(120,100,1060);;
+        font-family: h2F; font-size: 20px;
+        margin: 5px 10px;
+        color: white; text-align: center;
+        display: block; width: 100%; 
+        margin: 0; 
+        font-weight: 700; font-style: bold;
+        box-sizing: border-box; text-transform: capitalize;
+        //box-shadow: 1px 1px 1px 0.5px #d4d4d4;
+    }
+    controls{
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+    controls contr-but{
+        padding: 5px 10px;
+        background-color: crimson;//#000817dd;
+        font-family: p2F;
+        margin: 5px 10px;
+        color: white;
+    }
+    canvas{
+        border: 0.5px solid crimson;
+    }
+</style>
+<script>
+;(function () {
+    let src = '//cdn.jsdelivr.net/npm/eruda';
+    src = 'http://localhost:1111/eruda/eruda.min.js';
+    //if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+})();
+;(function () {
+    var host = "";
+    //host = "localhost";
+    host = "192.168.43.1";
+    var site = "http://"+host+":8001";
+    var res_addr = "http://"+host+":1111";
+document.write(`
+<scr`+`ipt src="${res_addr}/CodeHelps/src/CodeHelps.js"></scr`+`ipt>
+<scr`+`ipt src="${res_addr}/CDraw/src/CDraw.js"></scr`+`ipt>
+`);
+})();
+</script>
+<body>
+    <game-title>chase the moon</game-title>
+    <controls>
+        <contr-but action="playback">pause</contr-but>
+        <contr-but action="settings">settings</contr-but>
+        <contr-but action="info">records</contr-but>
+    </controls>
+    <br>
+    <logSpace style="color: red;"></logSpace>
+    <canvas id="canvas"></canvas>
+    <script>
+        let logSpace = DOMHelp._("logSpace");
+        logger = {
+            write: function(v){logSpace.innerText = v;}
+        }
+        let playbackContr = DOMHelp._("[action='playback]'");
+    </script>
+</body>
+<script> 
+let a = document.getElementById("canvas");
+let b = a.getContext("2d");
+CDraw.setCanvasStyle(a, {type: "fill", alpha: 0, position: "static", pinToTop: true});   
+a.style.position = "absolute";
+a.style.top = "50%";
+a.style.left = "50%"
+a.style.display = "block";
+a.style.margin = "0 auto"
+a.style.transform = "translate(-50%,-50%)";
+drawOn(b); 
+
+
+
+function drawOn(b){
+    let wh = (window.screen.width<601?345:(window.screen.width<901?500:690));
+    let CW = a.width = wh;
+    let CH = a.height = wh;
+    let CR = MHelp.resultantOf(CW, CH);
+    let scene = new CDraw.useScene(b);
+    let bgRect = new CDraw.rect(0, CW, 0, CH, "_#000817");
+    scene.add(bgRect);
+    
+    
+    let fogColor1Base = null;
+    fogColor1Base = "rgba(100,1060,120,5)";//green
+    fogColor1Base = "rgba(100,120,1060,5)";//blue
+    //fogColor1Base = "rgba(1060,100,120,5)";//red
+    
+    let fogColor1 = b.createLinearGradient(0, 0, 0, CH);
+    fogColor1.addColorStop(0, "transparent");
+    fogColor1.addColorStop(1, fogColor1Base);
+    let bg = 
+    {
+    shapes: [
+        //new CDraw.rect(CW/2, 20, CH/2-60, 60, ["", "rgba(250,200,50,0.5)"]),
+        new CDraw.rect(0, CW, 0, CH, ["", "red"]),
+    ],
+    setShapeColor: function(shape){
+        shape.color = fogColor1;
+    },
+    
+    }//EO bg
+    
+    
+    let moon = 
+    {
+    shape: new CDraw.arc(CW-20*2.5, 0+20*2.5, 20, 0, 6.3, "_#111111"),
+    }//EO moon
+    
+    
+    let highrises = 
+    {
+    shapes: [
+        
+    ],
+    speed: 1.05,
+    lastshape: null,
+    move: function(){
+        highrises.shapes.map((shape, ind)=>{
+            shape.x -= hero.fxke*highrises.speed;
+            let lastshape = highrises.shapes[highrises.shapes.length-1];
+            if(!highrises.lastshape) highrises.lastshape = lastshape;
+            if(shape.x+shape.lengthX<0){
+                shape.x = highrises.lastshape.x+highrises.lastshape.lengthX-1;
+                highrises.lastshape = shape;
+            }//EO
+        });
+    },
+    init: function(){
+        let length = highrises.shapes.length;
+        let lastshape = highrises.shapes[length-1];
+        lastshape = (lastshape?lastshape:{x:0, lengthX:0});
+        if(lastshape.x+lastshape.lengthX<CW+200){
+        let shape = new CDraw.rect(0, 0, floor.shape.y-15, 15, "_#111111");
+        shape.x = Number(lastshape.x+lastshape.lengthX-1);
+        shape.lengthX = CW/(5+Math.random()*2);
+        shape.breadthY = CH/(3-Math.random()*1);
+        shape.y = CH-shape.breadthY;
+        highrises.shapes.push(shape);
+        scene.add(shape);
+        this.init();
+        }
+    }
+    }//EO highrises
+    
+    
+    
+    
+    let modelplayer = function(){
+    this.shape = new CDraw.arc(CW/10,CH/1.8,CH/70,0,6.3,"_orangered"),
+    this.yke = 1,
+    this.xke = 0,
+    this.fxke = 1,
+    this.gravity = function(){
+         this.yke += 0.1;//this.yke/(this.yke*10);
+         this.xke = 0;
+    },
+    this.collision = function(){
+        this.canbounce -= 0.1;
+        let inpitspace = false;
+        pits.shapes.map((shape, ind)=>{
+            if(this.shape.x-this.shape.radius>=shape.x
+             &&this.shape.x+this.shape.radius<=shape.x+shape.lengthX){
+                inpitspace = true;
+                //console.log("we in pit region")
+                //this.fxke = 0;
+            }
+        });
+        if(this.shape.y+this.shape.radius>=floor.shape.y&&
+           this.shape.y+this.shape.radius<=floor.shape.y+floor.shape.breadthY){
+            //if on floor
+            if(!inpitspace){ 
+                this.yke *= -0.6; //Imperfect elastic collision
+                this.canbounce = 3;
+                //correction
+                this.shape.y = floor.shape.y-this.shape.radius;
+            };
+        }
+        hurdles.shapes.map((shape, ind)=>{
+            if(this.shape.x+this.shape.radius>=shape.x
+             &&this.shape.x-this.shape.radius<=shape.x
+             &&this.shape.y+this.shape.radius>=shape.y){
+                this.xke = hurdles.speeds[ind];
+                //correction
+                this.shape.x = shape.x-this.shape.radius;
+            }
+            if(this.shape.x>=shape.x
+             &&this.shape.x<=shape.x+shape.lengthX
+             &&this.shape.y+this.shape.radius>=shape.y){
+                this.yke *= -0.6; //Imperfect elastic collision
+                this.canbounce = 3;
+            }
+        });
+        
+    },
+    this.move = function(){
+        this.gravity();
+        this.collision();
+        this.shape.y += this.yke;
+        this.shape.x += this.xke;
+    },
+    this.jump = function(){
+        let ykeDiff = 0;
+        if(this.canbounce>=1) ykeDiff = -5;
+        this.yke += ykeDiff;
+    }
+    }//EO modelplayer
+    
+    
+    
+    
+    let floor = 
+    {
+    shape: new CDraw.rect(0, CW, CH/1.5, 5, "_white"),
+    
+    }//EO floor
+    
+    let hurdles = 
+    {
+    shapes: 
+        [
+        new CDraw.rect(-10, 10, floor.shape.y-15, 15, "_white"), 
+        new CDraw.rect(-10, 10, floor.shape.y-15, 15, "_red"), 
+        ],
+    speeds:
+        [
+        -1,-1,-1
+        ],
+    move: function(){
+        hurdles.shapes.map((shape, ind)=>{
+            shape.x += hero.fxke*hurdles.speeds[ind];
+            if(shape.x+shape.lengthX<0){
+                shape.x = CW+CW*(Math.random()*10)/10;
+                shape.breadthY = 10+(Math.floor(10*Math.random()));
+                shape.lengthX = 10+(Math.floor(10*Math.random()));
+                shape.y = floor.shape.y-shape.breadthY;
+                shape.color = floor.shape.color;
+                //"rgba(50,120,"+(200+Math.floor(50*Math.random()))+")"
+            }
+        });
+    },
+    }//EO hurdles
+    
+    
+    
+    let pits = 
+    {
+    shapes: 
+        [
+        new CDraw.rect(-50, 10, floor.shape.y, floor.shape.breadthY, "_red"), 
+        new CDraw.rect(-50, 10, floor.shape.y, floor.shape.breadthY, "_red"), 
+        ],
+    speeds:
+        [
+        -1,-1
+        ],
+    move: function(){
+        pits.shapes.map((shape, ind)=>{
+            shape.x += hero.fxke*hurdles.speeds[ind];
+            if(shape.x+shape.lengthX<0){
+                shape.x = CW+CW*(Math.random()*10)/10;
+                shape.lengthX = 25+(Math.floor(15*Math.random()));
+            }
+            shape.color ="#111111";//= fogColor1;
+        });
+    },
+    }//EO pits
+    
+    
+    
+    let coins = 
+    {
+    shapes: 
+        [
+        new CDraw.arc(-CW/2, CH/2, 50, 0, 6.3, "_red"), 
+        new CDraw.arc(-CW/1, CH/2, 20, 0, 6.3, "_blue"), 
+        ],
+    speeds:
+        [
+        -1,-1
+        ],
+    move: function(){
+        coins.shapes.map((shape, ind)=>{
+            shape.x += hero.fxke*hurdles.speeds[ind];
+            if(shape.x+shape.radius<0){
+                shape.alpha = 1;
+                shape.x = CW+CW*(Math.random()*10)/10;
+                shape.y = floor.shape.y-CH/(6+Math.random()*3);
+                shape.radius = 
+                1.5*hero.shape.radius+(Math.random()*hero.shape.radius);
+                shape.GCParams.shadow = 
+                [0.001,0.001, shape.color, shape.radius];
+            }
+            //Check Hit...From players.length
+            for(let i=0; players.length>i; i++){
+                let hero = players[i];
+                if(getCollDistance(shape, hero.shape).distance<0){
+                    console.log("Ring Hit");
+                    shape.alpha = 0;
+                    hero.shape.x+=3;
+                }//EO if.
+            }//EO for.
+        });
+    },
+    }//EO coins
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    let timecount = 0;
+    let players = [1, 2];
+    for(let i=0; players.length>i; i++){
+        players[i] = new modelplayer();
+        players[i].shape.x += -20+Math.random()*40;
+        players[i].shape.y -= -20+Math.random()*40;
+    }
+    let hero = players[0];
+    let ai = players[1];
+    ai.shape.color = "crimson";
+    ai.shape.radius = hero.shape.radius*1.5;
+    console.log(hero.shape.color)
+    
+    
+    
+    
+    scene.add(moon.shape);
+    moon.shape.color = "crimson";//,"midnightblue"
+    moon.shape.alpha = 1;
+    moon.shape.GCParams.shadow = 
+    [0.001,0.001, moon.shape.color, moon.shape.radius*2];
+    bg.shapes.map((shape)=>{
+        scene.add(shape);
+        bg.setShapeColor(shape);
+    });
+    highrises.init();
+    //floor
+    scene.add(floor.shape);
+    //pits
+    pits.shapes.map((shape)=>{
+        scene.add(shape);
+    });
+    //coins
+    coins.shapes.map((shape)=>{
+        scene.add(shape);
+        shape.color = "white";
+        shape.GCParams.shadow = 
+        [0.001,0.001, shape.color, shape.radius];
+    });
+    hurdles.shapes.map((shape)=>{
+        scene.add(shape)
+    }); 
+    for(let i=0; players.length>i; i++){
+        scene.add(players[players.length-i-1].shape);
+    }
+    
+    a.ontouchstart = function(){
+        hero.jump();
+    }//EO ontouchstart
+    a.onclick = function(){
+        hero.jump();
+    }//EO ontouchs
+    //update()
+    update();
+    
+        
+    function update(){
+        for(let i=0; players.length>i; i++){
+            players[i].move();
+        }
+        /*logger.write(hero.canbounce);
+        if(hero.canbounce === 3)
+        logger.write(hero.canbounce+"____"+Math.floor(hero.yke*100)/100)
+        */
+        
+        hurdles.move();
+        pits.move();
+        coins.move();
+        highrises.move();
+        
+        timecount++;
+        requestAnimationFrame(update)
+    }//EO updateFrame
+        
+    
+    
+    function aicontroller(){
+        /*let shapes = [];
+        let closest = [...hurdles.shapes, ...pits.shapes].sort((a, b)=>{
+            if( (a.x+a.lengthX/2)-(ai.shape.x)<0 ) return -1;
+            if( (b.x+b.lengthX/2)-(ai.shape.x)<0 ) return -1;
+            return a.x-b.x;
+        })[0];
+        
+        let distToClosest = (closest.x+closest.lengthX/2)-(ai.shape.x);
+        if(distToClosest<40 && distToClosest>0 && timecount%10==0){ ai.jump(); console.log("ai jump")}*/
+        let inrange = 40;
+        let shapes = [...hurdles.shapes, ...pits.shapes];
+        shapes.map((shape)=>{
+            if(shape.x-ai.shape.x<40 && shape.x-ai.shape.x>0)
+            inrange = shape.lengthX;
+        })
+        if(timecount%(40-inrange)===0){ console.log(inrange); ai.jump(); }
+        
+        requestAnimationFrame(aicontroller)
+    }//aicontroller
+    aicontroller();
+    
+    
+}   //EO drawOn
+    
+    
+    
+    
+    
+    function getCollDistance(ball1, ball2){
+    let adj = ball1.x-ball2.x;
+    let opp = ball1.y-ball2.y;
+    let hyp = Math.sqrt(  Math.pow(adj,2) + Math.pow(opp,2)  )
+    let distance = hyp-(ball1.radius+ball2.radius);
+    
+    let norm = [1, 1];
+    norm[0] = adj/hyp; norm[1] = Math.abs(opp/hyp);
+    return{distance:distance, norm:norm};
+    }//EO getCollDistance
+    
+    
+    
+</script>
+
+</html>

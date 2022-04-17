@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--meta name="viewport" content="width=device-width, height=device-height, initial-scale=1"-->
+    <title>Play DungeonRun</title>
+    <script> 
+///*
+var res1_addr = "http://localhost:1111";// "http://192.168.43.1:1111";
+var res_addr = "http://localhost:8080";//"http://192.168.43.1:8080";
+var res2_addr = "http://localhost:8001";//"http://192.168.43.1:8000";
+var site_host = "http://localhost";
+//*/
+/*
+var res1_addr = "http://192.168.43.1:1111";
+var res_addr = "http://192.168.43.1:8080";
+var res2_addr = "http://192.168.43.1:8000";
+var site_host = "http://192.168.43.1";*/
+window.addrs = {res: res_addr, res1: res1_addr, res2: res2_addr};
+window.site = {host: site_host};
+;(function () {
+    var src = '//cdn.jsdelivr.net/npm/eruda';
+    src = site_host+':1111/eruda/eruda.min.js';
+    //if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+})();
+;(function () { 
+    document.write(`
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/three.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/OrbitControls.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res2_addr}/C-3JS/js/Detector.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res2_addr}/C-3JS/js/THREEx.KeyboardState.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res2_addr}/C-3JS/js/THREEx.FullScreen.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res2_addr}/C-3JS/js/THREEx.WindowResize.js"></scr`+`ipt>
+
+
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/GLTFLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/DRACOLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/OBJLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/MTLLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/FBXLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/dat.gui.min.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/fflate.min.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/inflate.min.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/LoaderUtils.js"></scr`+`ipt>
+    
+    
+    
+    <scr`+`ipt src="${res1_addr}/lidsacaebasic.js"></scr`+`ipt>
+    <scr`+`ipt src="https://github.com/aydavid/res/lidsacaebasic.js"></scr`+`ipt>
+    <scr`+`ipt src="${res1_addr}/aygraph2.js"></scr`+`ipt>
+    <scr`+`ipt src="https://github.com/aydavid/res/aygraph2.js"></scr`+`ipt>
+    
+
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/modules_dungeonrun/ModelLoader.js" type="text/javascr`+`ipt" ></scr`+`ipt>
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/modules_dungeonrun/GeosCustom.js" type="text/javascr`+`ipt" ></scr`+`ipt>
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/modules_dungeonrun/AddGeos.js" type="text/javascr`+`ipt" ></scr`+`ipt>
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/modules_dungeonrun/main.js" type="text/javascr`+`ipt" >
+    
+    </scr`+`ipt>
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/index.js" type="text/javascr`+`ipt" >
+    </scr`+`ipt>
+    `
+    ); 
+})();
+    </script>
+    <style>
+        body {
+            background-color: #000817;
+            overflow: hidden;
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+        section #ThreeJS{
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+    </style>
+</head>
+<body>
+    <section id="ThreeJS"></section>
+    <logger style="width: 300px; height:100px; background-color: #000867dd; color:white; position: absolute; top: 0px; display: none;" id="logger"></logger>
+    <playbackbutton style="width: 300px; height: 100px; border-radius: 100px; background-color: rgb(45,30,7,0.75); position: absolute; top: 0px; left: 0px;" state="void">
+        <img style="width: 60px; height: 60%; display: block; position: absolute; top: 20%; left: 20px; ">
+        <span style="text-align: center; margin-left: 20px; position: absolute; right: 20px; color: white; font-family: monaco; font-size: 60px; font-weight: 800; top: 50%; padding: 0px; transform: translateY(-50%); " id="scoreboard">0</span>
+    </playbackbutton>
+    <menublock style="display: block; height: 80%; width: 80%; background-color: rgb(45,30,7,0.75); position: absolute; top: 10%; left: 10%; transform: translate(0, 0%); border-radius: 10px;">
+        <h5 style="text-align: center; color: white; font-family: monaco; font-size: 60px; font-weight: 800; padding: 0px; " gamestate>Loading ...</h5>
+    </menublock>
+    <camselect style="width: 300px; height:100px; background-color: #00a867dd; color:white; position: absolute; top: 0px; right: 0px; " id="cam">
+        <sel style="height: 100%; width: 50%; display: block; background-color: red; float: left;" id="sel1"></sel>
+        <sel style="height: 100%; width: 50%; display: block; background-color: purple; float: left;" id="sel2"></sel>
+    </camselect>
+</body>
+</html>
+<!--- 
+/storage/emulated/0/compilerInternalSonyX/projects/Branch1/web_projects/gamespace.io/C-3JS
+->
