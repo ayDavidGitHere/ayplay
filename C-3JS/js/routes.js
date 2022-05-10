@@ -105,6 +105,7 @@ window.Router$ = Router$;
 var routes = {
     "/deadpass": {load: "fightarena.html"},
     "/deadrun": {load: "dungeonrun.html"},
+    "/glockwar": {load: "glockwar.html"},
     "/": {load: "index.html"},
 } 
 Router$.use(routes);

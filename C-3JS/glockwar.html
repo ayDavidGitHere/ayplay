@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--meta name="viewport" content="width=device-width, height=device-height, initial-scale=1"-->
+    <title>Play Glockwar</title>
+    <script>
+var port = window.location.port;
+var host = window.location.hostname;
+//host = "localhost";
+//host = "192.168.43.1";
+var res1_addr = "http://"+host+":1111";
+var res_addr = "http://"+host+":8080";
+var res2_addr = "http://"+host+":"+port;
+var site_host = "http://"+host;
+
+
+
+window.addrs = {res: res_addr, res1: res1_addr, res2: res2_addr};
+window.site = {host: site_host};
+;(function () {
+    var src = '//cdn.jsdelivr.net/npm/eruda';
+    src = site_host+':1111/eruda/eruda.min.js';
+    //if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+})();
+
+
+
+
+;(function () { 
+    document.write(`
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/three.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/OrbitControls.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res2_addr}/C-3JS/js/Detector.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res2_addr}/C-3JS/js/THREEx.KeyboardState.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res2_addr}/C-3JS/js/THREEx.FullScreen.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res2_addr}/C-3JS/js/THREEx.WindowResize.js"></scr`+`ipt>
+
+
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/GLTFLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/DRACOLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/OBJLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/MTLLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/FBXLoader.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/dat.gui.min.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/fflate.min.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/inflate.min.js"></scr`+`ipt>
+    <scr`+`ipt  src="${res1_addr}/ThreeJs_121/LoaderUtils.js"></scr`+`ipt>
+    
+    
+    
+    <scr`+`ipt src="${res1_addr}/lidsacaebasic.js"></scr`+`ipt>
+    <scr`+`ipt src="${res1_addr}/aygraph2.js"></scr`+`ipt>
+
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/modules_glockwar/ModelLoader.js" type="text/javascr`+`ipt" ></scr`+`ipt>
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/modules_glockwar/GeosCustom.js" type="text/javascr`+`ipt" ></scr`+`ipt>
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/modules_glockwar/AddGeos.js" type="text/javascr`+`ipt" ></scr`+`ipt>
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/modules_glockwar/main.js" type="text/javascr`+`ipt" ></scr`+`ipt>
+    
+    <scr`+`ipt src="${res2_addr}/C-3JS/js/index.js" >
+    </scr`+`ipt>
+    `
+    );
+})();
+    </script>
+    <style>
+        body {
+            background-color: #000817;
+            overflow: hidden;
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+        section #ThreeJS{
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            top: 0; left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="stateScreen">
+        <p style="font-family: courier; font-size: 100px; text-align: center;">loading ...</p>
+    </div>
+    <section id="ThreeJS"></section>
+    <logger style="width: 300px; height:100px; background-color: #000867dd; color:white; position: absolute; top: 0px;" id="logger">
+    </logger>
+    <camselect style="width: 200px; height:100px; background-color: #000000; color:white; position: absolute; top: 0px; right: 0px; " id="cam">
+        <sel style="height: 100%; width: 50%; display: block; background-color: green; float: left;" id="sel1">
+        <img src="./C-3JS/img/eye.png" style="width:100%; height:100%;">
+        </sel>
+        <sel style="height: 100%; width: 50%; display: block; background-color: yellow; float: left;" id="sel2">
+        <img src="./C-3JS/img/eye.png" style="width:50%; height:50%; margin: 25%;">
+        </sel>
+    </camselect>
+    <heroctrls style="width:200px; height:200px; background-color: white; position:absolute; bottom:50px; left: 50px; display: block; border-radius:200px; border: 1px solid white;">
+        <contr actions style="height: 50%; width: 50%; display: block; background-color: transparent; opacity: 0.5;; position: absolute; top: -25%; left: 25%; transform:rotate(-90deg);" contr1>
+        <img src="./C-3JS/img/forward.svg" style="width:100%; height:100%;">
+        </contr>
+        <contr rotors style="height: 50%; width: 50%; display: block; background-color: transparent; opacity: 0.5;; position: absolute; top: 25%; left: -25%;" contr1>
+        <img src="./C-3JS/img/left-arrow.png" style="width:100%;height:100%;">
+        </contr>
+        <contr rotors style="height: 50%; width: 50%; display: block; background-color: transparent; opacity: 0.5;; position: absolute; top: 25%; right: -25%;" contr2>
+        <img src="./C-3JS/img/right-arrow.png" style="width:100%;height:100%;">
+        </contr>
+    </heroctrls>
+    <heroctrls style="width:200px; height:200px; background-color:#eeeeee; position:absolute; bottom:50px; right:50px; display:block; border-radius:200px; border: 1px solid white;">
+        <contr actions style="height: 50%; width: 100%; display: block; background-color: transparent; opacity: 0.5; position: absolute; top: -220%; left: 50%; transform: translateX(-50%);" contr3>
+        <img src="./C-3JS/img/guns-rifle.jpg" style="width:100%; height:100px; filter: invert(100%); ">
+        <img src="./C-3JS/img/guns-sniper.jpg" style="width:100%; height:100px; filter: invert(100%); ">
+        <img src="./C-3JS/img/guns-revolver.jpg" style="width:100%; height:100px; filter: invert(100%); ">
+        <img src="./C-3JS/img/guns-machinegun.jpg" style="width:100%; height:100px; filter: invert(100%); ">
+        </contr>
+        <contr actions style="height: 50%; width: 80%; display: block; background-color: white; opacity: 0.5; position: absolute; top: 25%; left: 50%; transform: translateX(-50%);" contr2>
+        <img src="./C-3JS/img/guns-pistol.jpg" style="width:100%; height:100%; filter: invert(0%); ">
+        </contr>
+    </heroctrls>
+    
+</body>
+</html>
+<!--- 
+/storage/emulated/0/compilerInternalSonyX/projects/Branch1/web_projects/gamespace.io/C-3JS
+->

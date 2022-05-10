@@ -138,10 +138,13 @@ function AddGeos(scene, collideMeshList){
     
     
     
+    
+    
+    
     addGeos.dungeonParts = 
     [
     {name: "Arch.fbx", position: {}, rotation: {}, scale: {}, object:null},
-    {name: "Arch_Door.fbx", position: {}, rotation: {}, scale: {}, object:null},
+    {name: "Arch_Door.fbx", position: {}, rotation: {y: 6.35/4}, scale: {}, object:null},
     {name: "Arch.fbx", position: {z: 252}, rotation: {}, scale: {}, object:null},
     {name: "Arch_bars.fbx", position: {z: 252}, rotation: {}, scale: {}, object:null},
     {name: "Banner.fbx", position: {z: 300-1, x: -6*1.3}, rotation: {}, scale: {}, object:null},
@@ -402,7 +405,7 @@ function AddGeos(scene, collideMeshList){
                 find(addGeos.dungeonParts, (p)=>p.object===part.name, (partClone)=>{
                     
                     if(partClone !== undefined){
-                        console.log("...cloining")
+                        console.log("...cloning geo")
                         partClone.model = {};
                         partClone.model.object = part.model.object.clone();
                         onLoad(partClone);
@@ -505,9 +508,9 @@ function AddGeos(scene, collideMeshList){
         addGeos.hero.scale.x *= 1/150;
         addGeos.hero.scale.y *= 1/150;
         addGeos.hero.scale.z *= 1/150;
-        addGeos.hero.position.x = +5;
-        addGeos.hero.position.z = 275;
-        addGeos.hero.rotation.y += -Math.PI/2;
+        addGeos.hero.position.x = +0;
+        addGeos.hero.position.z = 275+20;
+        addGeos.hero.rotation.y += Math.PI;//-Math.PI/2;
         scene.add(addGeos.hero);
         console.log("hero...", addGeos.hero);
         var names = "hero: ";
@@ -557,12 +560,11 @@ function AddGeos(scene, collideMeshList){
         
         
         console.log("mixer...");
-        window.stateScreen.Game.setState("play");
     }
     
     
     
-    /*
+    
     //BO hero2Model
     let hero2Model =  new ModelLoader.FBXLoader(window.addrs.res2+"/C-3JS/sprites/3d/SaxonWarrior/"+ "LowPolySaxonSoldier.fbx");
     console.log("-----      ", window.addrs.res2+"/C-3JS/sprites/3d/SaxonWarrior/"+ "LowPolySaxonSoldier.fbx");
@@ -575,6 +577,7 @@ function AddGeos(scene, collideMeshList){
         addGeos.hero2.position.x = +5;
         addGeos.hero2.position.z = 275;
         addGeos.hero2.rotation.y += -Math.PI/2;
+        addGeos.hero2.resourcePath = (window.addrs.res2+"/C-3JS/sprites/3d/SaxonWarrior/");
         scene.add(addGeos.hero2);
         console.log("hero2...", addGeos.hero2);
         var names = "hero2: ";
@@ -582,9 +585,9 @@ function AddGeos(scene, collideMeshList){
             names += "  |"+index+": "+animation.name;
         });
         console.log(names);
-        
+        //   |0: Armature|Run  |1: Armature|Walk  |2: Armature|Idle  |3: Body|Idle  |4: Armature|ArmatureAction  |5: Body|tempAttackStance  |6: Armature|hurt  |7: Armature|death  |8: Armature|tempAttackStance  |9: Armature|stab
     }
-    */
+    
     
     
     
@@ -617,6 +620,45 @@ function AddGeos(scene, collideMeshList){
     
     
     
+    let skyBoxProps = {topColor: "#333344", bottomColor: "#000000"} 
+    function getSkyMaterial_Shaded(){
+        var vertexShader = "varying vec3 vWorldPosition;"+
+        " "+
+        "void main() {"+
+        " vec4 worldPosition = modelMatrix * vec4( position, 1.0 );"+
+        " vWorldPosition = worldPosition.xyz;"+ //xyz
+        " "+
+        " gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );"+
+        "}";
+        var fragmentShader = "uniform vec3 topColor;"+
+        "uniform vec3 bottomColor;"+
+        "uniform float offset;"+
+        "uniform float exponent;"+
+        " "+
+        "varying vec3 vWorldPosition;"+
+        " "+
+        "void main() {"+
+        " float h = normalize( vWorldPosition + offset ).y;"+
+        " gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( h, exponent ), 0.0 )), 1.0 );"+
+        "}";
+        var uniforms = { topColor: {type: "c", value: new THREE.Color(skyBoxProps.topColor)}, bottomColor: {type: "c", value: new THREE.Color(skyBoxProps.bottomColor)}, offset: {type: "f", value: 0}, exponent: {type: "f", value: 0.8} }
+        var skyMaterial =new THREE.ShaderMaterial({vertexShader: vertexShader,fragmentShader: fragmentShader, uniforms: uniforms, side: THREE.BackSide, fog: false});
+        return skyMaterial;
+    }
+    /*
+    texture_Cube.format = THREE.RGBFormat;
+    var shader = THREE.ShaderLib['cube'];
+    //shader.uniforms['tCube'].value = texture_Cube;
+    let skyMaterial_ShadedTexture = new THREE.ShaderMaterial( { fragmentShader: shader.fragmentShader, vertexShader: shader.vertexShader, uniforms: shader.uniforms, depthWrite: false });  
+    let skyMaterial_Lambert =  new THREE.MeshLambertMaterial({ color: "white",opacity: 0.45, transparent: false, side: THREE.BackSide, map: texture });
+    let skyMaterial_Colors =  new THREE.MeshNormalMaterial({ opacity: 0.8, transparent: true, side: THREE.BackSide });*/
+    let skyMaterial_Shaded = getSkyMaterial_Shaded();
+    //
+    var skyBoxGeometry = new THREE.BoxGeometry(100, 100, 100);
+    var skyBoxGeometry = new THREE.SphereGeometry(100, 30, 30)
+    skyBox = new THREE.Mesh( skyBoxGeometry, skyMaterial_Shaded );    
+    skyBox.position.set(0, 0, 275 );
+    scene.add(skyBox)
     
     
     
