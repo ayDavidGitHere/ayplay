@@ -107,7 +107,9 @@ var routes = {
     "/run": {load: "run.html"},
     "/loop": {load: "looop.html"},
     "/deadpass": {load: "C-3JS/fightarena.html"},
+    "/glockwar": {load: "C-3JS/glockwar.html"},
     "/deadrun": {load: "C-3JS/dungeonrun.html"},
+    "/corbit": {load: "C-3JS/corbit.html"},
     "/": {load: "index-chr.html"},
     "/index.html": {load: "index-chr.html"},
 } 
