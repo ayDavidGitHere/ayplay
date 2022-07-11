@@ -1,0 +1,517 @@
+<html>
+    <head>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+<link rel="stylesheet" href="css/constant.css"> 
+<style>
+    html,body{
+        background-color: white;
+        width: 100%; height: 100%;
+        margin: 0; padding: 0;
+         background-color: #000817;
+    }    
+
+</style>
+<script>
+var res_addr = window.location.origin+"/js";
+;(function () {
+//"http://localhost:1111";
+document.write(`
+<scr`+`ipt src="${res_addr}/CodeHelps/src/CodeHelps.js"></scr`+`ipt>
+<scr`+`ipt src="${res_addr}/CDraw/CDraw.js"></scr`+`ipt>
+`);
+})();
+</script>
+<script>
+;(function () {
+let src = '//cdn.jsdelivr.net/npm/eruda';
+src = 'http://localhost:1111/eruda/eruda.min.js';
+src = res_addr+'/eruda/eruda.min.js';
+//if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+document.write('<scr' + 'ipt src=' + src + '></scr' + 'ipt>');
+document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+})();
+</script>
+<body>
+    <game-title>Killer Bean</game-title>
+    <controls>
+        <contr-but action="playback">pause</contr-but>
+        <contr-but action="settings">settings</contr-but>
+        <contr-but action="info">records</contr-but>
+    </controls>
+    <br>
+    <logSpace style="color: red;"></logSpace>
+    <canvas id="canvas"></canvas>
+    <script>
+        //alert(CDraw); alert(eruda)
+        let logSpace = DOM$._("logSpace");
+        logger = {
+            write: function(v){logSpace.innerText = v;}
+        }
+        let playbackContr = DOM$._("[action='playback]'");
+    </script>
+</body>
+<script>
+function initWorld(){ 
+    let a = document.getElementById("canvas");
+    let b = a.getContext("2d");
+    CDraw.setCanvasStyle(a, {type: "fill", alpha: 0, position: "static", pinToTop: true});   
+    a.style.position = "absolute";
+    a.style.top = "50%";
+    a.style.left = "50%"
+    a.style.display = "block";
+    a.style.margin = "0 auto"
+    a.style.transform = "translate(-50%,-50%)";
+    return {canvas: a, context: b};
+}
+function initController(){
+    let events = [];
+    function addKeyEvents(){
+        document.onkeydown = function(e){
+        let kCode = (e.keyCode);       //console.log("kd: "+ kCode);
+        events.map((event)=>{        
+            if(event.type!=="keydown") return;/*
+            if(event.direction=="left"&&kCode==37) event.callback();
+            if(event.direction=="right"&&kCode==39) event.callback();
+            if(event.direction=="W"&&kCode==87) event.callback();*/
+            if(event.direction=="left"&&kCode==37) event.ended = false;
+            if(event.direction=="right"&&kCode==39) event.ended = false;
+            if(event.direction=="W"&&kCode==87) event.ended = false;
+            if(!event.ended) event.callback();
+        });
+        }
+        document.onkeyup = function(e){
+        let kCode = (e.keyCode);      //console.log("ku: "+kCode);
+        events.map((event)=>{        
+            if(event.type!=="keydown") return;
+            if(event.direction=="left"&&kCode==37) event.ended = true;
+            if(event.direction=="right"&&kCode==39)  event.ended = true;
+            if(event.direction=="W"&&kCode==87)  event.ended = true;
+        });
+        }
+    }
+    let set = function(type, direction){ console.log(direction);
+        let listen = function(callback){ 
+            let event = {type, direction, callback, ended: true};       
+            if(typeof event.direction == "object"){ 
+            for(let i=0; event.direction.length>i; i++){
+                    events.push({... event, direction: event.direction[i] });
+            }
+            }
+            else events.push(event);
+            addKeyEvents();
+            return event;
+        }
+        return {listen};
+    }
+    return {set};
+}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+function constructRooms(Game, scene, CW, CH){
+    
+    let fogColor1Base = null;
+    fogColor1Base = "rgba(100,1060,120,5)";//green
+    fogColor1Base = "rgba(100,120,1060,5)";//blue
+    //fogColor1Base = "rgba(1060,100,120,5)";//red
+    
+    let fogColor1 = Game.context.createLinearGradient(0, 0, 0, CH);
+    fogColor1.addColorStop(0, "transparent");
+    fogColor1.addColorStop(1, fogColor1Base);
+    let bg = 
+    {
+    shapes: [
+        //new CDraw.rect(CW/2, 20, CH/2-60, 60, ["", "rgba(250,200,50,0.5)"]),
+        new CDraw.rect(0, CW, 0, CH, ["", "#0000dd"]),
+    ],
+    setShapeColor: function(shape){
+        shape.color = fogColor1;
+    },
+    
+    }//EO bg
+    scene.add(bg.shapes[0])
+    
+    
+    
+    //walls
+    let walls = 
+    [
+    //walls
+    {
+    dimensions: {sx: CW/2-CW/13, px: CW/13*2, sy: CH/2-CH/13, py: 0},
+    },
+    {
+    dimensions: {sx: CW/2-CW/13, px: CW/13*1.3, sy: CH/2+CH/13, py: 0},
+    },
+    {
+    dimensions: {sx: CW/2-CW/13, px: 0, sy: CH/2-CH/13, py: CH/13*2},
+    },
+    {
+    dimensions: {sx: CW/2+CW/13, px: 0, sy: CH/2-CH/13, py: CH/13*1.3},
+    },/*
+    //corner coloumns
+    {
+    dimensions: {sx: CW/2-CW/13-20/2, px: 0+20, sy: CH/2-CH/13, py: 0, t: 20},
+    },
+    {
+    dimensions: {sx: CW/2-CW/13-20/2, px: 0+20, sy: CH/2+CH/13, py: 0, t: 20},
+    },
+    {
+    dimensions: {sx: CW/2-CW/13, px: 0, sy: CH/2-CH/13, py: 1},
+    },
+    {
+    dimensions: {sx: CW/2+CW/13, px: 0, sy: CH/2-CH/13, py: 1},
+    },
+    */
+    ]//EO walls
+    function createWall(data){
+        let tk = (data.t?data.t:10);
+        return (
+        [
+            new CDraw.sLine(data.sx, data.px, data.sy, data.py, "white", tk),
+            new CDraw.sLine(data.sx, data.px, data.sy, data.py, "black",tk/5),
+        ]);
+    }//EO createWall
+    
+    
+    
+    
+    
+    walls.map((wall)=>{
+        let shapes = createWall(wall.dimensions);
+        //shapes.map(shape=> scene.add(shape));
+    });
+    
+    
+    //Creating Labyrinth
+    //Node linking tbc...
+    let GenerateLabyrinth = (function(){
+    let n = 12;
+    let pickedNodes = [];
+    let U = 1;
+    let G = 4;
+    for(let i=0; n>i; i+= G){ //if(Math.random()>0.95) continue;
+        let x = U*i;
+    for(let j=0; n>j; j++){
+        let y = U*j;
+        let limit = 1+Math.floor(Math.random()*3); //1-3
+    for(let k=0; limit>k; k++){
+        pickedNodes.push([x, y]);;
+        if(k!=limit-1) x += U*1*[-1,+1][Math.floor(Math.random()*2)];
+    }
+    }   
+    }   
+        
+        
+    for(let i=0; n>i; i+= G){ //if(Math.random()>0.95) continue;
+        let x = U*i;
+    for(let j=0; n>j; j++){
+        let y = U*j;
+        let limit = 1+Math.floor(Math.random()*3);
+    for(let k=0; limit>k; k++){
+        pickedNodes.push([y, x]);;
+        if(k!=limit-1) x += U*1*[-1,+1][Math.floor(Math.random()*2)];
+    }
+    }   
+    }   
+    
+    
+    let leftNodes = [];
+    for(let i=0; n>i; i+=1){
+    for(let j=0; n>j; j+=1){
+        let node = [i, j];
+        let foundNode = false;
+        pickedNodes.map((nd)=>{
+            if(nd[0]==node[0]&&nd[1]==node[1]) foundNode = true;
+            else{ }
+        });
+        if(!foundNode) leftNodes.push(node)
+        if(false && !foundNode) scene.add(new CDraw.text("+20pt hF", ""+i+":"+j, i*w, j*l, "_white"));
+    }
+    }
+    
+    return {Filled: pickedNodes, Empty: leftNodes, Units: n};
+    });//GenerateLabyrinth
+    
+    let Labyrinth = GenerateLabyrinth();
+    Labyrinth.Empty.map((nd)=>{
+        let n = Labyrinth.Units;
+        let w = CW/n; let l = CH/n;
+        //stand = createStand([-CW/2+nd[0]*w-w/2, 0+7.5/2, 275-CW/2+nd[1]*l-l/2], [w, 7.5/1, l]);
+        scene.add(new CDraw.rect(nd[0]*w, w, nd[1]*l, l, "_#111155"));
+    });
+    Labyrinth.Filled.map((nd)=>{
+        let n = Labyrinth.Units;
+        let CW = 120; let CH = 120;
+        let w = CW/n; let l = CH/n;
+        stamf = {
+            position: {
+                x: -CW/2+nd[0]*w-w/2, y: 0+7.5/2, z: 275-CW/2+nd[1]*l-l/2
+            }
+        };//EO stamf
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}//EO drawRoom
+function drawHero(Game, scene, SX, SY){
+    let heroParts = {
+        head: new CDraw.arc(SX, SY, 5/2, 0, 6.3, "_red"),
+        body: new CDraw.arc(SX, SY, 8/2, 0, 6.3, "_green"),
+        head: new CDraw.sLine(SX-(10/2+2)/1, 10, SY, 0, "red", 10/1),
+        body: new CDraw.sLine(SX, 0, SY-(20/2)/1, 20/1, "rgba(0,200,0,0.6)", 15/1),
+        leg1: new CDraw.sLine(SX, 10/1, SY-7/1, 0, "yellowgreen", 7/1),
+        leg2: new CDraw.sLine(SX, -10/1, SY+7/1, 0, "yellow", 7/1),
+        arm1: new CDraw.sLine(SX, 12/1, SY-8/1, 0, "yellowgreen", 7/1),
+        arm2: new CDraw.sLine(SX, 12/1, SY+8/1, 0, "yellow", 7/1),
+        hnd1: new CDraw.sLine(SX, 14/1, SY-8/1, 0, "yellowgreen", 6/1),
+        hnd2: new CDraw.sLine(SX, 14/1, SY+8/1, 0, "yellow", 6/1),
+    }//EO 
+    scene.add(heroParts.leg1);
+    scene.add(heroParts.leg2);
+    scene.add(heroParts.body);
+    scene.add(heroParts.arm1);
+    scene.add(heroParts.arm2);
+    scene.add(heroParts.hnd1);
+    scene.add(heroParts.hnd2);
+    scene.add(heroParts.head);
+
+
+    heroParts.head.props= {lineCap: "round"};
+    heroParts.body.props= {lineCap: "round"};
+    heroParts.leg1.props= {lineCap: "round"};
+    heroParts.leg2.props= {lineCap: "round"};
+    heroParts.leg1.dx=0;
+    heroParts.leg2.dx=0;
+    heroParts.leg1.dy=0;
+    heroParts.leg2.dy=0;
+    heroParts.arm1.props= {lineCap: "round"};
+    heroParts.arm2.props= {lineCap: "round"};
+    heroParts.arm1.dx=0;
+    heroParts.arm2.dx=0;
+    heroParts.arm1.dy=0;
+    heroParts.arm2.dy=0;
+
+
+    let leg1moving =  true;
+    let reanimate = (function(hero_){
+    hero = hero_;
+    [hero.parts.arm1,hero.parts.arm2,
+    hero.parts.leg1,hero.parts.leg2,
+    hero.parts.body,hero.parts.head, ]
+    .map((part)=>{
+        part.rotation.about = {x: hero.x, y: hero.y}
+        part.rotation.rad = hero.rot;
+        part.color = "#bb7777";
+    });
+    hero.parts.head.color = "white";
+    //hero.parts.arm1.color = "green"; hero.parts.arm2.color = "green";
+    hero.parts.body.x = hero.x; hero.parts.head.x = hero.x-10/2+2;
+    hero.parts.body.y = hero.y-20/2; hero.parts.head.y = hero.y;
+    
+
+    if(leg1moving && hero.walking){ 
+        hero.parts.leg1.dx -= hero.speed*3;
+        hero.parts.leg2.dx += hero.speed*3;
+    }
+    if(hero.parts.leg1.x <= hero.x-10) leg1moving = false;
+    if(!leg1moving && hero.walking){
+         hero.parts.leg2.dx -= hero.speed*3;
+         hero.parts.leg1.dx += hero.speed*3;
+    }
+    if(hero.parts.leg2.x <= hero.x-10) leg1moving = true;
+
+
+ 
+    hero.parts.leg2.x = hero.x+hero.parts.leg2.dx;
+    hero.parts.leg1.x = hero.x+hero.parts.leg1.dx;
+    hero.parts.leg2.y = hero.y-7+hero.parts.leg2.dy;
+    hero.parts.leg1.y = hero.y+7+hero.parts.leg1.dy;
+            
+    hero.parts.arm2.x = hero.x+hero.parts.arm2.dx;
+    hero.parts.arm1.x = hero.x+hero.parts.arm1.dx;
+    hero.parts.arm2.y = hero.y-13+hero.parts.arm2.dy;
+    hero.parts.arm1.y = hero.y+13+hero.parts.arm1.dy;
+    hero.parts.hnd1.x = hero.parts.arm1.x+ hero.parts.arm1.lengthX*1.35;
+    hero.parts.hnd1.y = hero.parts.arm1.y;
+    hero.parts.hnd2.x = hero.parts.arm2.x+ hero.parts.arm2.lengthX*1.35;
+    hero.parts.hnd2.y = hero.parts.arm2.y;
+
+
+    hero.parts.hnd1.rotation.rad = hero.parts.arm1.rotation.rad;
+    hero.parts.hnd2.rotation.rad = hero.parts.arm2.rotation.rad;
+    hero.parts.hnd1.rotation.about = hero.parts.arm1.rotation.about;
+    hero.parts.hnd2.rotation.about = hero.parts.arm2.rotation.about;
+    hero.parts.hnd1.color = hero.parts.arm1.color;
+    hero.parts.hnd2.color = hero.parts.arm2.color;
+
+
+
+    hero.y -= hero.speed*hero.dy;
+    hero.x -= hero.speed*hero.dx;
+    if(hero.speed>0)hero.speed -= 0.01;
+
+
+    
+    requestAnimationFrame(function(){ reanimate(hero); })
+    });//reanimate
+    return {
+        parts: heroParts, 
+        x: SX, y: SY, walking: true, rot: -1.6, speed: 0,
+        dx: 0, dy: 1, reanimate,
+    }
+}    //EO drawHero
+function drawOn(Game){
+    let {canvas: a, context: b} = Game;
+    let wh = (window.screen.width<601?4*90/1.25:(window.screen.width<901?500:690));
+    let CW = a.width = wh;
+    let CH = a.height = wh;
+    let CR = MATH$.resultantOf(CW, CH);
+    let scene = new CDraw.useScene(b);
+    let bgRect = new CDraw.rect(0, CW, 0, CH, "_#000817");
+    scene.add(bgRect);
+    
+    constructRooms(Game, scene, CW, CH);
+    let hero = drawHero(Game, scene, CW/2, CH/2); console.log(hero);
+    hero.reanimate(hero);
+
+    let badGuy = drawHero(Game, scene, CW/4, CH/4); 
+    //badGuy.reanimate(badGuy);
+
+
+
+
+
+
+    console.log(Game)
+    Game.controller.set("keydown", "left").listen(function(){
+        hero.rot -= Math.PI/32;
+    })
+    Game.controller.set("keydown", "right").listen(function(){
+        hero.rot += Math.PI/32;
+    });
+    Game.controller.set("keydown", ["right", "left"]).listen(function(){
+        hero.dy = -Math.sin(hero.rot);
+        hero.dx = -Math.cos(hero.rot); 
+    });
+    Game.controller.set("keydown", "W").listen(function(){
+        hero.speed = 0.6; 
+    })
+
+
+
+
+    
+
+}   //EO drawOn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</script>
+<script>
+class Game{
+    constructor(){
+        this.controller = initController();
+        let {canvas, context} = this.initWorld();
+        this.canvas = canvas;
+        this.context = context;
+        this.hero = new Hero();
+        this.initLevel(new Level(1));
+    }
+    initWorld(){
+        return initWorld();
+    }
+    setLevel(level){
+        this.level = level;
+    }
+    getLevel(){
+        return this.level;
+    }
+    initLevel(level){
+        this.setLevel(level);
+        this.initUi();
+    }
+    setPlaystate(state){
+        this.playstate = state;
+    }
+    setLastCheckPoint(checkPoint){
+        this.lastCheckPoint = checkPoint;
+    }
+    getLastCheckPoint(){
+        return this.lastCheckPoint;
+    }
+    initUi(){
+        drawOn(this);
+    }
+}
+class Level{
+    constructor(index){
+        this.setProps([
+        {
+            name: "shootout",
+            difficulty: 1,
+            index: 1,
+        },
+        {
+            name: "defense",
+            difficulty: 2,
+            index: 2,
+        },
+        ][index-1]);
+        return this;
+    }
+    setProps(props){
+        for(let key in props){ this[key] = props[key] };
+    }
+}
+class Hero{
+    constructor(){
+        this.health = 100;
+        this.active = false;
+    }
+    
+}
+
+let G = new Game(); 
+console.log(G.hero);
+console.log(G.level)
+
+
+
+
+</script>
+</html>
